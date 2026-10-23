@@ -68,14 +68,14 @@ const ResumeAnalyzer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-[#020617] text-slate-100 p-3 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Page Header */}
         <div className="space-y-1">
           <span className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-widest">
             Gemini ATS Copilot
           </span>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
             ATS Resume & Job Description Gap Analyzer
           </h1>
           <p className="text-xs text-slate-400">

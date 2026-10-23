@@ -165,7 +165,7 @@ const InterviewRoom = () => {
   if (!session) {
     return (
       <div className="min-h-screen bg-[#020617] text-slate-100 p-4 sm:p-6 lg:p-8 flex items-center justify-center">
-        <div className="max-w-xl w-full p-8 rounded-2xl bg-[#0f172a] border border-slate-800 shadow-2xl space-y-6">
+        <div className="max-w-xl w-full p-5 sm:p-8 rounded-2xl bg-[#0f172a] border border-slate-800 shadow-2xl space-y-6">
           <div className="text-center space-y-1">
             <div className="w-12 h-12 rounded-2xl bg-indigo-600 mx-auto flex items-center justify-center text-white shadow-xl shadow-indigo-600/30 mb-3">
               <Mic className="w-6 h-6" />
@@ -273,7 +273,7 @@ const InterviewRoom = () => {
 
   // View 2: Live Interview Stage
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-[#020617] text-slate-100 p-3 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Bar */}
         <div className="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-4">

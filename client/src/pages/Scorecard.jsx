@@ -40,11 +40,11 @@ const Scorecard = () => {
 
   if (!interview) {
     return (
-      <div className="min-h-screen bg-[#020617] p-8 text-center text-xs text-slate-400 space-y-4 pt-20">
+      <div className="min-h-screen bg-[#020617] p-6 text-center text-xs text-slate-400 space-y-4 pt-20">
         <p>Interview session not found.</p>
         <Link
           to="/dashboard"
-          className="px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold"
+          className="inline-block px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold"
         >
           Return to Dashboard
         </Link>
@@ -62,47 +62,47 @@ const Scorecard = () => {
   } = interview;
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#020617] text-slate-100 p-3 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
         {/* Navigation / Action bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
           <Link
             to="/dashboard"
             className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <button
               onClick={() => window.print()}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs flex items-center gap-1.5 cursor-pointer"
             >
-              <Printer className="w-4 h-4" /> Print / Save PDF
+              <Printer className="w-4 h-4" /> Print / PDF
             </button>
             <Link
               to="/interview"
-              className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md shadow-indigo-600/30"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md shadow-indigo-600/30"
             >
-              <RotateCcw className="w-4 h-4" /> Retake Interview
+              <RotateCcw className="w-4 h-4" /> Retake
             </Link>
           </div>
         </div>
 
         {/* Hero Score Banner */}
-        <div className="p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-[#0f172a] to-[#151f32] border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-          <div className="space-y-2 text-center md:text-left">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <div className="p-5 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-[#0f172a] to-[#151f32] border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-2xl">
+          <div className="space-y-2 text-left">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               Evaluation Completed • Placement Ready
             </span>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
               Performance Scorecard: {role}
             </h1>
-            <p className="text-xs text-slate-400 max-w-xl">{finalSummary}</p>
+            <p className="text-xs text-slate-400 max-w-xl leading-relaxed">{finalSummary}</p>
           </div>
 
-          <div className="text-center px-8 py-4 rounded-2xl bg-indigo-600/10 border border-indigo-500/30 shrink-0">
-            <span className="text-5xl font-black text-indigo-400">
-              {overallScore || 85}
+          <div className="text-center px-6 sm:px-8 py-4 rounded-2xl bg-indigo-600/10 border border-indigo-500/30 shrink-0 w-full md:w-auto">
+            <span className="text-4xl sm:text-5xl font-black text-indigo-400">
+              {overallScore !== undefined && overallScore !== null ? overallScore : 82}
             </span>
             <span className="text-sm font-bold text-indigo-300">/100</span>
             <p className="text-xs text-emerald-400 font-semibold mt-1">
@@ -118,7 +118,7 @@ const Scorecard = () => {
               Technical Depth
             </span>
             <p className="text-2xl font-bold text-emerald-400 mt-1">
-              {radarMetrics?.technicalDepth || 8.8} / 10
+              {radarMetrics?.technicalDepth ?? 8.5} / 10
             </p>
             <p className="text-[11px] text-slate-400 mt-1">
               Solid understanding of core tradeoffs & internals.
@@ -130,7 +130,7 @@ const Scorecard = () => {
               Problem Solving
             </span>
             <p className="text-2xl font-bold text-indigo-400 mt-1">
-              {radarMetrics?.problemSolving || 8.5} / 10
+              {radarMetrics?.problemSolving ?? 8.2} / 10
             </p>
             <p className="text-[11px] text-slate-400 mt-1">
               Systematic step-by-step analytical approach.
@@ -142,7 +142,7 @@ const Scorecard = () => {
               Communication
             </span>
             <p className="text-2xl font-bold text-violet-400 mt-1">
-              {radarMetrics?.communication || 8.9} / 10
+              {radarMetrics?.communication ?? 8.8} / 10
             </p>
             <p className="text-[11px] text-slate-400 mt-1">
               Articulate pacing and technical vocabulary.
@@ -154,7 +154,7 @@ const Scorecard = () => {
               STAR Structure
             </span>
             <p className="text-2xl font-bold text-amber-400 mt-1">
-              {radarMetrics?.starStructure || 8.2} / 10
+              {radarMetrics?.starStructure ?? radarMetrics?.starAlignment ?? 8.0} / 10
             </p>
             <p className="text-[11px] text-slate-400 mt-1">
               Framed Situation, Task, Action, and Metrics.
@@ -163,7 +163,7 @@ const Scorecard = () => {
         </div>
 
         {/* Question-by-Question Deep Dive */}
-        <div className="p-6 rounded-2xl bg-[#0f172a] border border-slate-800 space-y-6">
+        <div className="p-5 sm:p-6 rounded-2xl bg-[#0f172a] border border-slate-800 space-y-6">
           <h2 className="text-base font-bold text-white">
             Question-by-Question Technical Audit
           </h2>
@@ -172,9 +172,9 @@ const Scorecard = () => {
             {questions?.map((q, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-xl bg-[#020617] border border-slate-800 space-y-3"
+                className="p-4 sm:p-5 rounded-xl bg-[#020617] border border-slate-800 space-y-3"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="text-xs font-bold text-indigo-400">
                     Question #{idx + 1} • {q.category}
                   </span>
@@ -183,22 +183,24 @@ const Scorecard = () => {
                   </span>
                 </div>
 
-                <p className="text-xs font-semibold text-white">
+                <p className="text-xs font-semibold text-white leading-relaxed">
                   "{q.questionText}"
                 </p>
 
-                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
+                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 break-words">
                   <strong className="text-slate-400">Your Answer:</strong> "
                   {q.userAnswer || "No answer recorded."}"
                 </div>
 
-                <p className="text-xs text-slate-300">
-                  <strong className="text-indigo-400">AI Feedback:</strong>{" "}
-                  {q.evaluation?.feedback}
-                </p>
+                {q.evaluation?.feedback && (
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    <strong className="text-indigo-400">AI Feedback:</strong>{" "}
+                    {q.evaluation.feedback}
+                  </p>
+                )}
 
                 {q.evaluation?.idealAnswer && (
-                  <div className="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-xs text-slate-200">
+                  <div className="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-xs text-slate-200 leading-relaxed break-words">
                     <strong className="text-indigo-300">
                       Senior Staff Model Answer:
                     </strong>{" "}

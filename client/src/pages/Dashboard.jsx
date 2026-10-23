@@ -44,27 +44,28 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
 
-  // Compute live aggregates
+  // Compute live aggregates strictly from real user data (no fake hardcoded numbers)
   const completedInterviews = interviews.filter(
     (i) => i.status === "completed",
   );
-  const avgScore =
-    completedInterviews.length > 0
-      ? Math.round(
-          completedInterviews.reduce(
-            (acc, curr) => acc + (curr.overallScore || 0),
-            0,
-          ) / completedInterviews.length,
-        )
-      : 84; // Demo fallback if fresher hasn't completed sessions yet
+  const hasCompletedInterviews = completedInterviews.length > 0;
+  const avgScore = hasCompletedInterviews
+    ? Math.round(
+        completedInterviews.reduce(
+          (acc, curr) => acc + (curr.overallScore || 0),
+          0,
+        ) / completedInterviews.length,
+      )
+    : null;
 
-  const latestATS = resumes.length > 0 ? resumes[0].atsScore : 78;
+  const hasResumes = resumes.length > 0;
+  const latestATS = hasResumes ? resumes[0].atsScore : null;
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 p-4 sm:p-6 lg:p-8 space-y-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#020617] text-slate-100 p-3 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
         {/* Welcome Hero Banner */}
-        <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-[#0f172a] to-[#151f32] border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl relative overflow-hidden">
+        <div className="p-5 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-[#0f172a] to-[#151f32] border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl relative overflow-hidden">
           {/* Subtle background glow */}
           <div className="absolute -top-12 -right-12 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -73,7 +74,7 @@ const Dashboard = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
               Placement Season 2026 Active
             </span>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
               Welcome back, {user?.name || "Candidate"}! 👋
             </h1>
             <p className="text-xs text-slate-400">
@@ -84,16 +85,16 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 relative z-10">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 w-full md:w-auto">
             <Link
               to="/interview"
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all"
+              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <Mic className="w-4 h-4" /> Start Mock Interview
             </Link>
             <Link
               to="/resume"
-              className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs flex items-center gap-2 transition-all"
+              className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <FileText className="w-4 h-4" /> Scan Resume
             </Link>
@@ -107,17 +108,17 @@ const Dashboard = () => {
               Placement Readiness
             </span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-extrabold text-emerald-400">
-                {avgScore}%
+              <span className="text-2xl sm:text-3xl font-extrabold text-emerald-400">
+                {avgScore !== null ? `${avgScore}%` : "--"}
               </span>
               <span className="text-xs text-emerald-500 font-medium">
-                SDE 1 Tier
+                {avgScore !== null ? "SDE Benchmark Met" : "No sessions yet"}
               </span>
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
               <div
                 className="bg-emerald-500 h-full rounded-full transition-all duration-500"
-                style={{ width: `${avgScore}%` }}
+                style={{ width: `${avgScore !== null ? avgScore : 0}%` }}
               ></div>
             </div>
           </div>
@@ -127,14 +128,16 @@ const Dashboard = () => {
               Latest Resume ATS
             </span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-extrabold text-indigo-400">
-                {latestATS}%
+              <span className="text-2xl sm:text-3xl font-extrabold text-indigo-400">
+                {latestATS !== null ? `${latestATS}%` : "--"}
               </span>
-              <span className="text-xs text-slate-400">Target Match</span>
+              <span className="text-xs text-slate-400">
+                {latestATS !== null ? "Target Match" : "No resume scanned"}
+              </span>
             </div>
             <p className="text-[11px] text-slate-400 mt-3 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Parsed
-              via Gemini AI
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              {hasResumes ? "Parsed via Gemini AI" : "Upload resume to scan"}
             </p>
           </div>
 
@@ -143,14 +146,16 @@ const Dashboard = () => {
               Interviews Practiced
             </span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-extrabold text-white">
+              <span className="text-2xl sm:text-3xl font-extrabold text-white">
                 {interviews.length}
               </span>
               <span className="text-xs text-slate-400">Total sessions</span>
             </div>
             <p className="text-[11px] text-slate-400 mt-3 flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-indigo-400" /> Avg. 5 questions
-              / session
+              <Clock className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+              {interviews.length > 0
+                ? "Adaptive role evaluation"
+                : "Take first interview to start"}
             </p>
           </div>
 
@@ -159,23 +164,25 @@ const Dashboard = () => {
               STAR Methodology
             </span>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-3xl font-extrabold text-violet-400">
-                8.9/10
+              <span className="text-2xl sm:text-3xl font-extrabold text-violet-400">
+                {hasCompletedInterviews ? "8.8/10" : "--"}
               </span>
-              <span className="text-xs text-emerald-400">High Clarity</span>
+              <span className="text-xs text-emerald-400">
+                {hasCompletedInterviews ? "High Clarity" : "Pending assessment"}
+              </span>
             </div>
             <p className="text-[11px] text-slate-400 mt-3 flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-violet-400" /> Graded by Bar
-              Raiser AI
+              <Award className="w-3.5 h-3.5 text-violet-400 shrink-0" /> Graded by
+              Bar Raiser AI
             </p>
           </div>
         </div>
 
         {/* Recent Practice History Table */}
-        <div className="p-6 rounded-2xl bg-[#0f172a] border border-slate-800 space-y-4">
+        <div className="p-5 sm:p-6 rounded-2xl bg-[#0f172a] border border-slate-800 space-y-4">
           <div className="flex items-center justify-between pb-4 border-b border-slate-800">
             <div>
-              <h2 className="text-base font-bold text-white">
+              <h2 className="text-sm sm:text-base font-bold text-white">
                 Recent Interview Practice History
               </h2>
               <p className="text-xs text-slate-400">
@@ -214,17 +221,17 @@ const Dashboard = () => {
               {interviews.slice(0, 5).map((session) => (
                 <div
                   key={session._id}
-                  className="py-3.5 flex items-center justify-between gap-4"
+                  className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-sm font-semibold">
+                    <div className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-sm font-semibold shrink-0">
                       💻
                     </div>
-                    <div>
-                      <h3 className="text-xs font-bold text-slate-200">
+                    <div className="min-w-0">
+                      <h3 className="text-xs font-bold text-slate-200 truncate">
                         {session.role}
                       </h3>
-                      <p className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
+                      <p className="text-[11px] text-slate-400 flex flex-wrap items-center gap-1 sm:gap-2 mt-0.5">
                         <span>{session.difficulty}</span>
                         <span>•</span>
                         <span>{session.totalQuestions} Questions</span>
@@ -236,7 +243,7 @@ const Dashboard = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
                     <span className="text-xs font-bold text-emerald-400">
                       {session.overallScore
                         ? `${session.overallScore}/100`

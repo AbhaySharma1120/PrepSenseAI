@@ -24,7 +24,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     // Login handler
-    const login = async(ElementInternals, password) => {
+    const login = async(email, password) => {
+        localStorage.removeItem('prepsense_token');
+        localStorage.removeItem('prepsense_user');
         const response = await api.post('/auth/login', { email, password });
         const { token: jwtToken, ...userData } = response.data.data;
 
@@ -39,6 +41,8 @@ export const AuthProvider = ({ children }) => {
 
     // Register handler
     const register = async(name, email, password, targetRole) => {
+        localStorage.removeItem('prepsense_token');
+        localStorage.removeItem('prepsense_user');
         const response = await api.post('/auth/register', {
             name,
             email,
